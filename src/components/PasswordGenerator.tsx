@@ -14,7 +14,6 @@ export function PasswordGenerator() {
   });
 
   const [password, setPassword] = useState('');
-  const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
 
   const handleGenerate = useCallback(() => {
@@ -25,14 +24,12 @@ export function PasswordGenerator() {
     setError('');
     const newPassword = generatePassword(options);
     setPassword(newPassword);
-    setCopied(false);
   }, [options]);
 
   const handleCopy = async () => {
     if (!password) return;
     await navigator.clipboard.writeText(password);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    alert('Password copied to clipboard!');
   };
 
   const handleOptionChange = (key: keyof PasswordOptions, value: boolean | number) => {
@@ -64,13 +61,15 @@ export function PasswordGenerator() {
           readOnly
           className={styles.passwordInput}
           placeholder="Click generate"
+          onClick={handleCopy}
+          title="Click to copy password"
         />
         <button
           onClick={handleCopy}
           className={styles.copyButton}
           disabled={!password}
         >
-          {copied ? 'Copied!' : 'Copy'}
+          Copy
         </button>
       </div>
 
