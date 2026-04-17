@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { generatePassword } from '../utils/generatePassword';
+import { generatePassword, validateOptions } from '../utils/generatePassword';
 import { calculateStrength } from '../utils/passwordStrength';
 import type { PasswordOptions } from '../types';
 import styles from './PasswordGenerator.module.css';
@@ -15,8 +15,14 @@ export function PasswordGenerator() {
 
   const [password, setPassword] = useState('');
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState('');
 
   const handleGenerate = useCallback(() => {
+    if (!validateOptions(options)) {
+      setError('Select at least one character type');
+      return;
+    }
+    setError('');
     const newPassword = generatePassword(options);
     setPassword(newPassword);
     setCopied(false);
@@ -145,6 +151,8 @@ export function PasswordGenerator() {
       <button onClick={handleGenerate} className={styles.generateButton}>
         Generate Password
       </button>
+
+      {error && <div className={styles.error}>{error}</div>}
     </div>
   );
 }

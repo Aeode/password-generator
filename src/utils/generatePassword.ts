@@ -11,6 +11,15 @@ const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
 const NUMBERS = '0123456789';
 const SYMBOLS = '!@#$%^&*()_+-=[]{}|;:,.<>?';
 
+export function validateOptions(options: PasswordOptions): boolean {
+  return (
+    options.includeUppercase ||
+    options.includeLowercase ||
+    options.includeNumbers ||
+    options.includeSymbols
+  );
+}
+
 export function generatePassword(options: PasswordOptions): string {
   let charset = '';
   const requiredChars: string[] = [];
